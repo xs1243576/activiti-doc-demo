@@ -7,7 +7,7 @@
 * 管理员归档
 * 退回
 
+### 公文审批流程
+![公文审批流程](screenshot/doc_approve.jpg)
 
-### 积分申报流程
-![积分申报流程](screenshot/multiTask.png)
 
