@@ -8,6 +8,9 @@
 * 退回
 
 ### 公文审批流程
-![公文审批流程](screenshot/doc_approve.jpg)
+* 完整的公文审批流程  DocApprove1
+* 公文审批流程 包含 退回  DocApprove2
+
+![公文审批流程](./screenshot/doc_approve.jpg)
 
 

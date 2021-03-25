@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// 完整的公文审批流程
+// 公文审批流程 包含 退回
 public class DocApprove2 {
 
   public static void main(String[] args) {
