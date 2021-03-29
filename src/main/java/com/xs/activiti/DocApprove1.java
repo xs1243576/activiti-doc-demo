@@ -1,6 +1,5 @@
 package com.xs.activiti;
 
-import com.oracle.tools.packager.Log;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;

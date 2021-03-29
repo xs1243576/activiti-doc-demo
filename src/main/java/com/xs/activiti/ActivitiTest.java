@@ -1,11 +1,17 @@
 package com.xs.activiti;
 
-import com.oracle.tools.packager.Log;
 import com.sun.org.apache.xpath.internal.objects.XNull;
 import org.activiti.engine.*;
+import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration;
+import org.activiti.engine.impl.form.DefaultTaskFormHandler;
+import org.activiti.engine.impl.form.FormPropertyHandler;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.impl.task.TaskDefinition;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -13,6 +19,7 @@ import org.activiti.engine.task.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +32,7 @@ public class ActivitiTest {
   public static RuntimeService runtimeService = null;
   public static HistoryService historyService = null;
   public static TaskService taskService = null;
+  public static FormService formService = null;
 
   public static void main(String[] args) {
 
@@ -54,13 +62,16 @@ public class ActivitiTest {
     if (taskService == null) {
       taskService = processEngine.getTaskService();
     }
+    if (formService == null) {
+      formService = processEngine.getFormService();
+    }
   }
 
   @Test
   void method1() {
 //    init();
     // 流程部署
-    Deployment deployment = repositoryService.createDeployment().addClasspathResource("xs_doc_approve20.bpmn")
+    Deployment deployment = repositoryService.createDeployment().addClasspathResource("xs_doc_approve_form20.bpmn")
       .name("xs_doc_approve")
       .category("")
       .deploy();
@@ -74,7 +85,7 @@ public class ActivitiTest {
   @Test
   void method2() {
     // 删除部署id
-    repositoryService.deleteDeployment("35001");
+    repositoryService.deleteDeployment("52501");
 //    List<String> deploymentList =repositoryService.getDeploymentResourceNames("");
   }
 
@@ -82,7 +93,7 @@ public class ActivitiTest {
   void method3() {
     // 展示流程定义
     ProcessDefinition processDefinition1 = repositoryService.createProcessDefinitionQuery()
-      .deploymentId("52501").singleResult();//1
+      .deploymentId("120001").singleResult();//1
     System.out.println("流程名称 ： [" + processDefinition1.getName() + "]， 流程ID ： ["
       + processDefinition1.getId() + "], 流程KEY : " + processDefinition1.getKey());
   }
@@ -98,7 +109,7 @@ public class ActivitiTest {
 
   @Test
   void method5() {
-    Log.info("=============删除流程实例============");
+//    Log.info("=============删除流程实例============");
     //     查询所有的流程实例
 //    RuntimeService runtimeService = processEngine.getRuntimeService();
     List<ProcessInstance> processInstances1 = runtimeService.createProcessInstanceQuery().list();
@@ -113,13 +124,32 @@ public class ActivitiTest {
           .processInstanceId(processInstanceId).list();
         if (historicProcessInstances.isEmpty()) {
           String msg = "No process instances with the ID: " + processInstanceId;
-          Log.info(msg);
+//          Log.info(msg);
           throw new ActivitiException(msg);
         }
         historyService.deleteHistoricProcessInstance(processInstanceId);
         return;
       }
       runtimeService.deleteProcessInstance(processInstanceId, "删除原因");
+    }
+  }
+
+  @Test
+  void method55() {
+    //     查询所有的流程实例
+    List<ProcessInstance> processInstances1 = runtimeService.createProcessInstanceQuery().list();
+    for (int i = 0; i < processInstances1.size(); i++) {
+      System.out.println(processInstances1.get(i).getId());
+
+      List<Task> taskList9 = taskService.createTaskQuery().processInstanceId(processInstances1.get(i).getId()).list();
+//    System.out.println("taskList9 = " + taskList9);
+      for (int j = 0; j < taskList9.size(); j++) {
+        Task task = taskList9.get(j);
+        System.out.println("--" + task.getId());
+        System.out.println("--" + task.getName());
+        System.out.println("--" + task.getAssignee());
+        System.out.println("--" + task.getProcessInstanceId());
+      }
     }
   }
 
@@ -145,7 +175,47 @@ public class ActivitiTest {
   @Test
   void method7() {
     List<Task> taskList9 = taskService.createTaskQuery().list();
-    System.out.println("taskList9 = " + taskList9);
+//    System.out.println("taskList9 = " + taskList9);
+    for (int i = 0; i < taskList9.size(); i++) {
+      Task task = taskList9.get(i);
+      System.out.println("--" + task.getId());
+      System.out.println("--" + task.getName());
+      System.out.println("--" + task.getAssignee());
+      System.out.println("--" + task.getProcessInstanceId());
+      System.out.println("--" + task.getProcessDefinitionId());
+    }
+  }
+
+  @Test
+  void method77() {
+    List<Task> taskList9 = taskService.createTaskQuery().taskCandidateOrAssigned("").list();
+//    System.out.println("taskList9 = " + taskList9);
+    for (int i = 0; i < taskList9.size(); i++) {
+      Task task = taskList9.get(i);
+      System.out.println("--" + task.getId());
+      System.out.println("--" + task.getName());
+      System.out.println("--" + task.getAssignee());
+      System.out.println("--" + task.getProcessInstanceId());
+    }
+  }
+
+  @Test
+  void method777() {
+    List<String> idList = new ArrayList<String>();
+    idList.add("110001");
+//    processInstanceId("110001").list();
+
+//    List<Task> taskList9 = taskService.createTaskQuery().processDefinitionId("xs_doc_approve_key:1:52504").list();
+//    List<Task> taskList9 = taskService.createTaskQuery().processDefinitionId("").list();
+    List<Task> taskList9 = taskService.createTaskQuery().processInstanceId("110001").list();
+//    System.out.println("taskList9 = " + taskList9);
+    for (int i = 0; i < taskList9.size(); i++) {
+      Task task = taskList9.get(i);
+      System.out.println("--" + task.getId());
+      System.out.println("--" + task.getName());
+      System.out.println("--" + task.getAssignee());
+      System.out.println("--" + task.getProcessInstanceId());
+    }
   }
 
   @Test
@@ -173,10 +243,87 @@ public class ActivitiTest {
     Map vars = new HashMap();
     vars.clear();
     vars.put("confirmPass", true);
-    taskService.complete(taskList8.get(0).getId(),vars);
+    taskService.complete(taskList8.get(0).getId(), vars);
 
     List<Task> taskList9 = taskService.createTaskQuery().list();
     System.out.println("taskList9 = " + taskList9);
+  }
+
+  // 重新设置流程变量
+  @Test
+  void method11() {
+    Map vars = new HashMap();
+
+    List<String> assigneeList = new ArrayList<String>();
+    assigneeList.add("shenhe1");
+    assigneeList.add("shenhe2");
+    assigneeList.add("shenhe3");
+    assigneeList.add("shenhe4");
+    vars.put("handlerlist", assigneeList);
+    runtimeService.setVariables("95001", vars);
+
+    System.out.println("--" + runtimeService.getVariableInstance("95001", "handlerlist").toString());
+    System.out.println("--" + runtimeService.getVariables("95001").toString());
+
+  }
+
+  // 查询表单信息
+  @Test
+  void method12() {
+    Deployment deployment = repositoryService.createDeployment().addClasspathResource("xs_doc_approve_form20.bpmn")
+      .name("xs_doc_approve")
+      .category("")
+      .deploy();
+    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+      .deploymentId(deployment.getId()).singleResult();
+
+    String procDefId = processDefinition.getId();
+    System.out.println("--" + procDefId);
+    StartFormData startFormData = formService.getStartFormData(procDefId);
+    List<FormProperty> formProperties = startFormData.getFormProperties();
+
+//    formService.getTaskFormData(task.getId());
+
+    for (FormProperty formProperty : formProperties) {
+//打印表单属性
+      System.out.println(formProperty.getName());
+      System.out.println(formProperty.getId());
+      System.out.println(formProperty.getType().getName());
+    }
+//提交表单（带参数）
+//    formService.submitTaskFormData(task.getId(), map);
+
+    ProcessDefinition pd = startFormData.getProcessDefinition();
+    System.out.println("--" + formProperties.toString());
+    System.out.println("--" + pd.toString());
+  }
+
+  // 查询任务节点的表单信息
+  @Test
+  void method13() {
+    String taskId = "usertask";
+    Task task = processEngine.getTaskService().createTaskQuery() // 创建任务查询
+      .taskId(taskId) // 根据任务id查询
+      .singleResult();
+    String processDefinitionId = task.getProcessDefinitionId(); // 获取流程定义id
+
+    ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) processEngine.getRepositoryService()
+      .getProcessDefinition(processDefinitionId);
+
+    ActivityImpl activityImpl = processDefinitionEntity.findActivity(task.getTaskDefinitionKey()); // 根据活动id获取活动实例
+    TaskDefinition taskDef = (TaskDefinition) activityImpl.getProperties().get("taskDefinition");
+
+    DefaultTaskFormHandler fh = (DefaultTaskFormHandler) taskDef.getTaskFormHandler();
+
+    List<FormPropertyHandler> flList = fh == null ? null : (List<FormPropertyHandler>) fh.getFormPropertyHandlers();
+
+    String formKey = "";
+
+    if (flList != null && flList.size() > 0) {
+      formKey = ((FormPropertyHandler) flList.get(0)).getId();
+    }
+
+
   }
 
 }
