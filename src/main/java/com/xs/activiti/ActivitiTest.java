@@ -270,12 +270,12 @@ public class ActivitiTest {
   // 查询表单信息
   @Test
   void method12() {
-    Deployment deployment = repositoryService.createDeployment().addClasspathResource("xs_doc_approve_form20.bpmn")
-      .name("xs_doc_approve")
-      .category("")
-      .deploy();
+//    Deployment deployment = repositoryService.createDeployment().addClasspathResource("xs_doc_approve_form20.bpmn")
+//      .name("xs_doc_approve")
+//      .category("")
+//      .deploy();
     ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
-      .deploymentId(deployment.getId()).singleResult();
+      .deploymentId("120001").singleResult();
 
     String procDefId = processDefinition.getId();
     System.out.println("--" + procDefId);
@@ -301,6 +301,7 @@ public class ActivitiTest {
   // 查询任务节点的表单信息
   @Test
   void method13() {
+    // 需要运行时的id才可以查询到结果
     String taskId = "usertask";
     Task task = processEngine.getTaskService().createTaskQuery() // 创建任务查询
       .taskId(taskId) // 根据任务id查询
