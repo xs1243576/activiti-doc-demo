@@ -83,6 +83,21 @@ public class ActivitiTest {
   }
 
   @Test
+  void method111() {
+//    init();
+    // 流程部署
+    Deployment deployment = repositoryService.createDeployment().addClasspathResource("parallel_demo.bpmn")
+      .name("parallel_demo")
+      .category("")
+      .deploy();
+    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+      .deploymentId(deployment.getId()).singleResult();
+    System.out.println("流程名称 ： [" + processDefinition.getName() + "]， 流程ID ： ["
+      + processDefinition.getId() + "], 流程KEY : " + processDefinition.getKey());
+
+  }
+
+  @Test
   void method2() {
     // 删除部署id
     repositoryService.deleteDeployment("52501");
