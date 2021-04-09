@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="qingjia1_key" name="qingjia1" isExecutable="true">
+    <startEvent id="startEvent1"></startEvent>
+    <userTask id="usertask1" name="提交申请" activiti:assignee="${handler1}">
+      <extensionElements>
+        <activiti:formProperty id="fullname" name="全名" type="string" expression="${fullname}" variable="fullname" required="true"></activiti:formProperty>
+        <activiti:formProperty id="days" name="天数" type="string" expression="${days}" variable="days" required="true"></activiti:formProperty>
+        <modeler:initiator-can-complete xmlns:modeler="http://activiti.com/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask2" name="部门审批" activiti:assignee="${handler2}">
+      <extensionElements>
+        <activiti:formProperty id="fullname" name="全名" type="string" expression="${fullname}" variable="fullname" required="true"></activiti:formProperty>
+        <activiti:formProperty id="days" name="天数" type="string" expression="${days}" variable="days" required="true"></activiti:formProperty>
+        <modeler:initiator-can-complete xmlns:modeler="http://activiti.com/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask3" name="办公室审批" activiti:assignee="${handler3}">
+      <extensionElements>
+        <activiti:formProperty id="fullname" name="全名" type="string" expression="${fullname}" variable="fullname" required="true"></activiti:formProperty>
+        <activiti:formProperty id="days" name="天数" type="string" expression="${days}" variable="days" required="true"></activiti:formProperty>
+        <modeler:initiator-can-complete xmlns:modeler="http://activiti.com/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <endEvent id="sid-AB59AB2C-891F-49F6-9D52-7F67978A6A72"></endEvent>
+    <sequenceFlow id="sid-05A6F643-4B23-4F27-AAB8-81AA8C2AAF4C" sourceRef="startEvent1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="sid-27A05372-45D4-4F4D-9229-8351DA32B506" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="sid-EF70FAFC-14C4-4D48-B3F3-0E116325D665" sourceRef="usertask2" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="sid-FB315827-999F-45EB-B0F3-D7E414782408" sourceRef="usertask3" targetRef="sid-AB59AB2C-891F-49F6-9D52-7F67978A6A72"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_qingjia1_key">
+    <bpmndi:BPMNPlane bpmnElement="qingjia1_key" id="BPMNPlane_qingjia1_key">
+      <bpmndi:BPMNShape bpmnElement="startEvent1" id="BPMNShape_startEvent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="163.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="80.0" width="100.0" x="206.0" y="138.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="80.0" width="100.0" x="404.0" y="138.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="80.0" width="100.0" x="604.0" y="138.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-AB59AB2C-891F-49F6-9D52-7F67978A6A72" id="BPMNShape_sid-AB59AB2C-891F-49F6-9D52-7F67978A6A72">
+        <omgdc:Bounds height="28.0" width="28.0" x="795.0" y="164.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-27A05372-45D4-4F4D-9229-8351DA32B506" id="BPMNEdge_sid-27A05372-45D4-4F4D-9229-8351DA32B506">
+        <omgdi:waypoint x="306.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="404.0" y="178.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-FB315827-999F-45EB-B0F3-D7E414782408" id="BPMNEdge_sid-FB315827-999F-45EB-B0F3-D7E414782408">
+        <omgdi:waypoint x="704.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="795.0" y="178.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-EF70FAFC-14C4-4D48-B3F3-0E116325D665" id="BPMNEdge_sid-EF70FAFC-14C4-4D48-B3F3-0E116325D665">
+        <omgdi:waypoint x="504.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="604.0" y="178.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-05A6F643-4B23-4F27-AAB8-81AA8C2AAF4C" id="BPMNEdge_sid-05A6F643-4B23-4F27-AAB8-81AA8C2AAF4C">
+        <omgdi:waypoint x="130.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="206.0" y="178.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
